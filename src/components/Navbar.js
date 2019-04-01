@@ -1,45 +1,22 @@
-import React, { Component } from 'react';
-import Navbar from './Navbar'
-import RecipeItem from './RecipeItem'
-import recipes from '../sample_data/recipes.json'
+import React from 'react'
+import logo from '../logo.svg';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.recipes = recipes.results;
-    this.state = {
-      searchString: ''
-    };
-  }
-
-  handleInputChange = (e) => {
-    this.setState({
-      searchString: e.target.value
-    });
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Navbar handleInput={this.handleInputChange} />
-        <div className="container mt-10">
-          <div className="row">
-          {this.state.searchString === '' ?
-            recipes.results.map((recipe, index) => {
-              return <RecipeItem key={index} title={recipe.title} ingredients={recipe.ingredients} image={recipe.thumbnail} />
-            }) :
-            recipes.results.filter((recipe) => {
-              return new RegExp(this.state.searchString, "i").test(recipe.title) || new RegExp(this.state.searchString, "i").test(recipe.ingredients)
-            }).map((recipe, index) => {
-                return <RecipeItem key={index} title={recipe.title} ingredients={recipe.ingredients} image={recipe.thumbnail} />
-              })
-          }
-          </div>
+const Navbar = (props) => (
+    <nav className="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+        <div className="navbar-brand col-1">
+            <img src={logo} className="Navbar-logo" alt="logo" />
         </div>
-      </div>
-    );
-  }
-}
 
-export default App;
+        <div className="form-group justify-content-center row col-10 my-2">
+            <input
+                onChange={props.handleInput}
+                className="form-control col-9 mr-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+            />
+        </div>
+    </nav>
+)
+
+export default Navbar;
