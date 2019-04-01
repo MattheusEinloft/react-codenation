@@ -13,16 +13,28 @@ class App extends Component {
     };
   }
 
-  render() { 
+  handleInputChange = (e) => {
+    this.setState({
+      searchString: e.target.value
+    });
+  }
+
+  render() {
     return (
       <div className="App">
-        <Navbar />
+        <Navbar handleInput={this.handleInputChange} />
         <div className="container mt-10">
           <div className="row">
-            <RecipeItem />
-            <RecipeItem />
-            <RecipeItem />
-            <RecipeItem />
+          {this.state.searchString === '' ?
+            recipes.results.map((recipe, index) => {
+              return <RecipeItem key={index} title={recipe.title} ingredients={recipe.ingredients} image={recipe.thumbnail} />
+            }) :
+            recipes.results.filter((recipe) => {
+              return new RegExp(this.state.searchString, "i").test(recipe.title) || new RegExp(this.state.searchString, "i").test(recipe.ingredients)
+            }).map((recipe, index) => {
+                return <RecipeItem key={index} title={recipe.title} ingredients={recipe.ingredients} image={recipe.thumbnail} />
+              })
+          }
           </div>
         </div>
       </div>
